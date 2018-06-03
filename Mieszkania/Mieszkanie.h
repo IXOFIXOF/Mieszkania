@@ -9,6 +9,8 @@ public:
 	string PobierzAdres();
 	void UstalAdres();
 	CWlasciciel* PobierzWlasciciela();
+	void WyswietlLokatorow();
+	CLokator* PobierzLokatora(int n);
 	virtual void UstalDaneSpecyficzne();
 	friend ostream& operator<<(ostream& sru, CMieszkanie* Mieszkanie);
 	friend CMieszkanie& operator+(CMieszkanie& Mieszkanie, CLokator* Lokator);
@@ -20,5 +22,6 @@ protected:
 	vector<CLokator*> m_Lokatorzy;
 	CWlasciciel* m_Wlasciciel;
 	virtual void Print(ostream& sru);
+	int UstalSumeCzynszu();
 };
 
