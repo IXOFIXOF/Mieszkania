@@ -62,14 +62,17 @@ CMieszkanie& operator+(CMieszkanie& Mieszkanie, CWlasciciel* Wlasciciel)
 }
 CMieszkanie& operator-(CMieszkanie& Mieszkanie, CLokator* Lokator)
 {
-	Mieszkanie.m_Wlasciciel->UstalDochod(Lokator->PobierzCzynsz() * -1);
+	if (Mieszkanie.m_Wlasciciel != nullptr)
+	{
+		Mieszkanie.m_Wlasciciel->UstalDochod(Lokator->PobierzCzynsz() * -1);
+	}
 	vector<CLokator*>::iterator it = find(Mieszkanie.m_Lokatorzy.begin(), Mieszkanie.m_Lokatorzy.end(), Lokator);
 	Mieszkanie.m_Lokatorzy.erase(it);
 	return Mieszkanie;
 }
 CMieszkanie& operator-(CMieszkanie& Mieszkanie, CWlasciciel* Wlasciciel)
 {
-	Wlasciciel->UstalDochod(Mieszkanie.UstalSumeCzynszu() * -1);
+	Mieszkanie.m_Wlasciciel = nullptr;
 	return Mieszkanie;
 }
 void CMieszkanie::UstalDaneSpecyficzne()

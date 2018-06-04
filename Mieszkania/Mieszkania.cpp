@@ -21,6 +21,7 @@ CCzlowiek*   DodajCzlowieka();
 void DodajWlascicielaDoMieszkania(vector<CMieszkanie*>& Mieszkania, vector<CCzlowiek*>& Ludzie);
 void DodajLokatoraDoMieszkania(vector<CMieszkanie*>& Mieszkania, vector<CCzlowiek*>& Ludzie);
 void UsunWlascicielaZMieszkania(vector<CMieszkanie*>& Mieszkania, vector<CCzlowiek*>& Ludzie);
+void UsunLokatoraZMieszkania(vector<CMieszkanie*>& Mieszkania, vector<CCzlowiek*>& Ludzie);
 void WyswietlDomy(vector<CMieszkanie*> Mieszkania );
 void WyswietlLudzi(vector<CCzlowiek*> Ludzie);
 int main()
@@ -63,6 +64,12 @@ int main()
 		case 5:
 		{
 			UsunWlascicielaZMieszkania(Mieszkania, Ludzie);
+			system("cls");
+			break;
+		}
+		case 6:
+		{
+			UsunLokatoraZMieszkania(Mieszkania, Ludzie);
 			system("cls");
 			break;
 		}
@@ -218,7 +225,7 @@ void UsunWlascicielaZMieszkania(vector<CMieszkanie*>& Mieszkania, vector<CCzlowi
 {
 	vector<CMieszkanie*> ::iterator itMieszkania = Mieszkania.begin();
 	vector<CCzlowiek*> ::iterator itLudzie = Ludzie.begin();
-	CCzlowiek* OdTerazTylkoCzlowiek = nullptr;
+	CCzlowiek* OdTerazTylkoCzlowiek;
 	int KtoreMieszkanie = 0;
 	int KtoryCzlowiek = 0;
 	int licznik = 1;
@@ -230,9 +237,32 @@ void UsunWlascicielaZMieszkania(vector<CMieszkanie*>& Mieszkania, vector<CCzlowi
 	cin >> KtoreMieszkanie;
 	CWlasciciel* Wlasciciel = Mieszkania[KtoreMieszkanie - 1]->PobierzWlasciciela();
 	itLudzie = find(Ludzie.begin(), Ludzie.end(), Wlasciciel);
-//	OdTerazTylkoCzlowiek = (CCzlowiek)Wlasciciel;
+	OdTerazTylkoCzlowiek = new CCzlowiek(*Wlasciciel);
+	KtoryCzlowiek = distance(Ludzie.begin(), itLudzie);
+	Ludzie[KtoryCzlowiek] = OdTerazTylkoCzlowiek;
 	*Mieszkania[KtoreMieszkanie - 1] = *Mieszkania[KtoreMieszkanie - 1] - Wlasciciel;
-	Ludzie.erase(itLudzie);
 	delete Wlasciciel;
-	Ludzie.insert(itLudzie, OdTerazTylkoCzlowiek);
+}
+void UsunLokatoraZMieszkania(vector<CMieszkanie*>& Mieszkania, vector<CCzlowiek*>& Ludzie)
+{
+	vector<CMieszkanie*> ::iterator itMieszkania = Mieszkania.begin();
+	vector<CCzlowiek*> ::iterator itLudzie = Ludzie.begin();
+	int KtoreMieszkanie = 0;
+	int KtoryCzlowiek = 0;
+	int licznik = 1;
+	while (itMieszkania != Mieszkania.end())
+	{
+		cout << licznik << ". " << *itMieszkania;
+		licznik++; itMieszkania++;
+	}
+	cin >> KtoreMieszkanie;
+	Mieszkania[KtoreMieszkanie - 1]->WyswietlLokatorow();
+	cin >> KtoryCzlowiek;
+	CLokator* Lokator = Mieszkania[KtoreMieszkanie - 1]->PobierzLokatora(KtoryCzlowiek - 1);
+	CCzlowiek* OdTerazTylkoCzlowiek = new CCzlowiek(*Lokator);
+	itLudzie = find(Ludzie.begin(), Ludzie.end(), Lokator);
+	KtoryCzlowiek = distance(Ludzie.begin(), itLudzie);
+	Ludzie[KtoryCzlowiek] = OdTerazTylkoCzlowiek;
+	*Mieszkania[KtoreMieszkanie - 1] = *Mieszkania[KtoreMieszkanie - 1] - Lokator;
+	delete Lokator;
 }
